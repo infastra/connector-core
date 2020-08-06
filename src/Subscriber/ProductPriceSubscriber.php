@@ -8,6 +8,7 @@ use Jtl\Connector\Core\Event\RequestEvent;
 use Jtl\Connector\Core\Exception\SubscriberException;
 use Jtl\Connector\Core\Model\Product;
 use Jtl\Connector\Core\Model\ProductPrice;
+use Jtl\Connector\Core\Model\ProductPriceItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ProductPriceSubscriber implements EventSubscriberInterface
@@ -45,8 +46,13 @@ class ProductPriceSubscriber implements EventSubscriberInterface
                     );
                 }
 
-                $hostId = $price->getProductId()->getHost();
+                $priceItems = $price->getItems();
+                usort($priceItems, function(ProductPriceItem $a, ProductPriceItem $b) {
+                    return $a->getQuantity() - $b->getQuantity();
+                });
 
+                $price->setItems(...$priceItems);
+                $hostId = $price->getProductId()->getHost();
                 if (!isset($resortedPrices[$hostId])) {
                     $resortedPrices[$hostId] = (new Product())->setId($price->getProductId());
                 }
