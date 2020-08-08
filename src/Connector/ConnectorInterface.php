@@ -16,9 +16,9 @@ interface ConnectorInterface
     /**
      * @param ConfigInterface $config
      * @param Container $container
-     * @param EventDispatcher $eventDispatcher
+     * @param EventDispatcher $dispatcher
      */
-    public function initialize(ConfigInterface $config, Container $container, EventDispatcher $eventDispatcher): void;
+    public function initialize(ConfigInterface $config, Container $container, EventDispatcher $dispatcher): void;
     
     /**
      * @return PrimaryKeyMapperInterface
